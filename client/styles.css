@@ -143,3 +143,35 @@ section .color:nth-child(1)
 
 
 
+body {
+    background-color: #111827;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    /* overflow: hidden; */
+  }
+  
+  .co2 {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.4), 0 0 60px rgba(255, 255, 255, 0.2), 0 0 80px rgba(255, 255, 255, 0.1);
+    animation: co2 2s ease-in-out infinite;
+  }
+  
+  @keyframes co2 {
+    0% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(-50%, -150%) scale(2);
+      opacity: 0;
+    }
+  }
+
+
+
