@@ -6,10 +6,10 @@
 		<link rel="stylesheet" type="text/css" href="styles.css">
 		<link href="https://fonts.googleapis.com/css2?family=Calistoga&display=swap" rel="stylesheet">
         <script type="text/javascript" src = "https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7-rc.0/web3.min.js"></script>
+		
         </head>
-
 		<body>
-
+			
 		<section>
 			<div class="color"></div>
 			<div class="color"></div>
@@ -23,7 +23,6 @@
 					<br>
 				<button onclick="connectContract()" class="dabba" >Connect contract </button></br>
 				<p class = "connecthuakinhi" id="contractArea" style="color: #CFD2CF"> No connection </p><br>
-				
 				<input class="set1" type="text" min="12" max="12" placeholder="Aadhar Number" id="farmerArea1"/>
 				<br>
 				<br>
@@ -38,6 +37,8 @@
 				<br>
 				<input class="set1" type="text" placeholder="Insurance" id="farmerArea5"/>
 				<br><br>
+				<input class="set1" type="text" placeholder="Carbon Emission" id="carbonEmission"/>
+				<br><br>
 				<button onclick="addPerson()" class="dabba"> Add Details </button></br>
 				</br>
 				<br>
@@ -46,7 +47,53 @@
 				</div>
 			</div>
 		</section>
+		<script type="module">
+            // Import the functions you need from the SDKs you need
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.0/firebase-app.js";
+            import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.19.0/firebase-analytics.js";
+            import { getDatabase,ref, child, get} from "https://www.gstatic.com/firebasejs/9.19.0/firebase-database.js";
 
+            // TODO: Add SDKs for Firebase products that you want to use
+            // https://firebase.google.com/docs/web/setup#available-libraries
+          
+            // Your web app's Firebase configuration
+            // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+            const firebaseConfig = {
+              apiKey: "AIzaSyAqBc3QD7R9vymrl88JSxuXousxlio2Yko",
+              authDomain: "pay02-59367.firebaseapp.com",
+              databaseURL: "https://pay02-59367-default-rtdb.firebaseio.com",
+              projectId: "pay02-59367",
+              storageBucket: "pay02-59367.appspot.com",
+              messagingSenderId: "163766738329",
+              appId: "1:163766738329:web:fb4b92cce58d75ede74708",
+              measurementId: "G-TXV4DCSTCR"
+            };
+          
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+            const analytics = getAnalytics(app);
+		
+            // Get a reference to the database service
+            // Initialize Realtime Database and get a reference to the service
+            const database = getDatabase(app);
+            // Retrieve data from the database
+            const dbRef = ref(getDatabase());
+            get(child(dbRef, `carbonEmission`)).then((snapshot) => {
+            if (snapshot.exists()) {
+			document.getElementById('carbonEmission').value =snapshot.val();
+            console.log(snapshot.val());
+           } else {
+            console.log("No data available");
+          }
+         }).catch((error) => {
+          console.error(error);
+         // });
+            // Get a reference to the input element
+            
+            });
+			// Get a reference to the input element
+         
+          </script>
             <script>
                 let account;
                 const connectMetamask = async()=>{
@@ -91,7 +138,7 @@
 			},
 			{
 				"internalType": "string",
-				"name": "status",
+				"name": "emission",
 				"type": "string"
 			}
 		],
@@ -159,7 +206,7 @@
 		"type": "function"
 	}
 ];
-                    const address = "0xCfbab7780B213306fC1B599c609CCe8264F6254a";
+                    const address = "0x2903a2F9C0D36229431233f1c5866186e6e2A183";
 
                     window.web3 = await new Web3(window.ethereum);
                     window.contract = await new web3.eth.Contract(ABI, address);
@@ -171,7 +218,7 @@
                 const getdetails = async()=>{
                     const sankhya = document.getElementById("personplace").value;
                     const person = await contract.methods.getdetails(sankhya).call();
-                    document.getElementById("jankari").innerHTML = `Status: ${person[4]}`;
+                    document.getElementById("jankari").innerHTML = `Emission: ${person[4]}`;
                 }
 
                 const addPerson = async()=>{
@@ -180,8 +227,10 @@
                     const mobileNo = Number(document.getElementById("farmerArea3").value);
                     const registration = document.getElementById("farmerArea4").value;
                     const insurance = document.getElementById("farmerArea5").value;
+					const emission = document.getElementById("carbonEmission").value;
 
-                    await contract.methods.addPerson(aadharNo, name, mobileNo, registration, insurance, 'In progress...').send({from: account});
+
+                    await contract.methods.addPerson(aadharNo, name, mobileNo, registration, insurance, emission).send({from: account});
                     console.log("details added");
                 };
 

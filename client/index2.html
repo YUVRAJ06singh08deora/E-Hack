@@ -34,7 +34,7 @@
             <input class="set2" type="text" placeholder="Aadhaar no." id="personplace"/>
             <br>
             <br>
-            <button class="set1" onclick="getdetails()" class="dabba"> Get Farmer Details </button></br><br>
+            <button class="set1" onclick="getdetails()" class="dabba"> Get Details </button></br><br>
         </section>
 
 </body>
@@ -82,7 +82,7 @@
 			},
 			{
 				"internalType": "string",
-				"name": "status",
+				"name": "emission",
 				"type": "string"
 			}
 		],
@@ -150,7 +150,7 @@
 		"type": "function"
 	}
 ];
-                    const address = "0xCfbab7780B213306fC1B599c609CCe8264F6254a";
+                    const address = "0x2903a2F9C0D36229431233f1c5866186e6e2A183";
 
                     window.web3 = await new Web3(window.ethereum);
                     window.contract = await new web3.eth.Contract(ABI, address);
@@ -162,7 +162,7 @@
                 const getdetails = async()=>{
                     const sankhya = document.getElementById("personplace").value;
                     const person = await contract.methods.getdetails(sankhya).call();
-                    document.getElementById("jankari").innerHTML = `Name: ${person[0]}<br>Mobile No: ${person[1]}<br>Registration No.: ${person[2]}<br>Insurance: ${person[3]};<br>Status: ${[person][4]}`;
+                    document.getElementById("jankari").innerHTML = `Name: ${person[0]}<br>Mobile No: ${person[1]}<br>Registration No.: ${person[2]}<br>Insurance: ${person[3]}<br>Emission: ${person[4]}`;
                 };
 
                 const addPerson = async()=>{

@@ -3,39 +3,39 @@
 pragma solidity ^0.6.8;
 
 contract getDetails {
-    struct Farmer {
+    struct Person {
         // State variables
         int aadharNo;
         string name;
         int mobileNo;
-        string crop;
-        string produce;
-        string status;
+        string registration;
+        string insurance;
+        string emission;
     }
 
-    Farmer[] farmers;
+    Person[] persons;
 
-    function addFarmer(
+    function addPerson(
         int aadharNo,
         string memory name,
         int mobileNo,
-        string memory crop,
-        string memory produce,
-        string memory status
+        string memory registration,
+        string memory insurance,
+        string memory emission
     ) public {
-        Farmer memory f = Farmer(
+        Person memory f = Person(
             aadharNo,
             name,
             mobileNo,
-            crop,
-            produce,
-            status
+            registration,
+            insurance,
+            emission
         );
 
-        farmers.push(f);
+        persons.push(f);
     }
 
-    function getFarmer(
+    function getdetails(
         int aadharNo
     )
         public
@@ -50,11 +50,17 @@ contract getDetails {
     {
         uint i;
 
-        for (i = 0; i < farmers.length; i++) {
-            Farmer memory f = farmers[i];
+        for (i = 0; i < persons.length; i++) {
+            Person memory f = persons[i];
 
             if (f.aadharNo == aadharNo) {
-                return (f.name, f.mobileNo, f.crop, f.produce, f.status);
+                return (
+                    f.name,
+                    f.mobileNo,
+                    f.registration,
+                    f.insurance,
+                    f.emission
+                );
             }
         }
 
@@ -64,11 +70,11 @@ contract getDetails {
     function getstatus(int aadharNo) public view returns (string memory) {
         uint i;
 
-        for (i = 0; i < farmers.length; i++) {
-            Farmer memory f = farmers[i];
+        for (i = 0; i < persons.length; i++) {
+            Person memory f = persons[i];
 
             if (f.aadharNo == aadharNo) {
-                return (f.status);
+                return (f.emission);
             }
         }
         return ("Please enter correct aadhar no. !");
