@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<br>
+    <head>
+        <title>E-Hack fetch</title>
+		<link rel="icon" href="favicon.ico">
+		<link rel="stylesheet" type="text/css" href="styles2.css">
+		<link href="https://fonts.googleapis.com/css2?family=Calistoga&display=swap" rel="stylesheet">
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@1,300&display=swap" rel="stylesheet">
+        <script type="text/javascript" src = "https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7-rc.0/web3.min.js"></script>
+		
+		
+    </head>
+
+<body>
+
+	<section>
+        <div class="color"></div>
+        <div class="color"></div>
+        <div class="color"></div>
+        <div class="container">
+        <div class="form">
+            <h2>Know your bill !</h2>
+        <div class="inputbox">
+            <button class="set1" onclick="connectMetamask()" class="dabba"> Connect Wallet </button></br>
+            <p id="accountArea" style="color: #CFD2CF"> No connection </p><br>
+
+            <button class="set1" onclick="connectContract()" class="dabba"> Connect Contract </button></br>
+            <p id="contractArea" style="color: #CFD2CF"> No connection </p><br>
+
+    
+            <p class="set3"  id = "jankari" style="color: #CFD2CF">Enter farmer's aadhaar number for details</p>
+            <input class="set2" type="text" placeholder="Aadhaar no." id="personplace"/>
+            <br>
+            <br>
+            <button class="set1" onclick="getdetails()" class="dabba"> Get Farmer Details </button></br><br>
+        </section>
+
+</body>
+            <script>
+                let account;
+                const connectMetamask = async()=>{
+                    if(window.ethereum !== "undefined") {
+                    const accounts = await ethereum.request({
+                        method: "eth_requestAccounts"
+                    });
+                    account = accounts[0];
+                }
+
+                document.getElementById("accountArea").innerHTML = `Connected with ${account}`;
+                }
+
+                const connectContract = async()=>{
+                    const ABI = [
+	{
+		"inputs": [
+			{
+				"internalType": "int256",
+				"name": "aadharNo",
+				"type": "int256"
+			},
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "int256",
+				"name": "mobileNo",
+				"type": "int256"
+			},
+			{
+				"internalType": "string",
+				"name": "registration",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "insurance",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "status",
+				"type": "string"
+			}
+		],
+		"name": "addPerson",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "int256",
+				"name": "aadharNo",
+				"type": "int256"
+			}
+		],
+		"name": "getdetails",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "int256",
+				"name": "aadharNo",
+				"type": "int256"
+			}
+		],
+		"name": "getstatus",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+];
+                    const address = "0xCfbab7780B213306fC1B599c609CCe8264F6254a";
+
+                    window.web3 = await new Web3(window.ethereum);
+                    window.contract = await new web3.eth.Contract(ABI, address);
+
+                    document.getElementById("contractArea").innerHTML = `Connected with address ${address}`;
+
+                };
+
+                const getdetails = async()=>{
+                    const sankhya = document.getElementById("personplace").value;
+                    const person = await contract.methods.getdetails(sankhya).call();
+                    document.getElementById("jankari").innerHTML = `Name: ${person[0]}<br>Mobile No: ${person[1]}<br>Registration No.: ${person[2]}<br>Insurance: ${person[3]};<br>Status: ${[person][4]}`;
+                };
+
+                const addPerson = async()=>{
+                    const status = document.getElementById("Area6").value;
+
+                    await contract.methods.addPerson(status).send({from: account});
+                    console.log("Status Updated");
+                };
+
+                
+            </script>
+        </body>
+</html>
